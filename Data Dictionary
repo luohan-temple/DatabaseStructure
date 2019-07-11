@@ -1,8 +1,40 @@
-User DB:
+CREATE TABLE social_media (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  account_type VARCHAR(255),
+  account_id VARCHAR(255),
+);
+
+CREATE TABLE photo (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  data IMAGE,
+)
+
+CREATE TABLE auth (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(10) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+);
+
+CREATE TABLE user (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  school VARCHAR(255),
+  year INT,
+  is_active BOOLEAN NOT NULL,
+  credit INT NOT NULL,
+  photo INT FOREIGN KEY REFERENCES photo(id),
+  phone_no VARCHAR(20),
+  email VARCHAR(255),
+  social_media_id INT FOREIGN KEY REFERENCES social_media(id),
+  social_media_id_alt INT FOREIGN KEY REFERENCES social_media(id),
+  locations TEXT,
+);
+/*
   User_ID
   Username
   Password
-  Fisrt_Name
+  First_Name
   Last_Name
   School
   Year
@@ -16,8 +48,27 @@ User DB:
   Sec_Social_Media_Type
   Sec_Social_Media_ID
   Avail_Trans_Places
-  
-Item DB:
+*/
+
+CREATE TABLE book (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ISBN INT,
+  name VARCHAR(255),
+  edition VARCHAR(255),
+  author VARCHAR(255),
+  public_date DATE,
+  sellor INT NOT NULL FOREIGN KEY REFERENCES user(id),
+  price INT,
+  condition INT, /* rating 1-5 */
+  photo INT FOREIGN KEY REFERENCES photo(id),
+  desc TEXT,
+  avail_date DATE,
+  expire_date DATE,
+  location TEXT,
+  transaction INT FOREIGN KEY REFERENCES transaction(id),
+);
+
+/*
   ID
   ISBN
   Name
@@ -26,21 +77,32 @@ Item DB:
   Public_Date
   Seller_ID
   Price
-  Format
+  Format ? what is this
   Used_Condition
-  Class
-  Class_Session
+  Class ? what is this
+  Class_Session ? what is this
   Picture
   Description
   Avail_Date
   Expir_Date
   Trans_Places
   Sold_Status
-  
-Tran DB:
+
+*/
+
+CREATE TABLE transaction (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sellor INT NOT NULL FOREIGN KEY REFERENCES user(id),
+  buyer INT NOT NULL FOREIGN KEY REFERENCES user(id),
+  date DATE,
+  status BOOLEAN,
+);
+
+/*
   Seller_ID
   Buyer_ID
   Item_ID
   Date
   Trans_Place
   Finish_Status
+*/
