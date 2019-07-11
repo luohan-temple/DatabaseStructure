@@ -1,108 +1,61 @@
-CREATE TABLE social_media (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  account_type VARCHAR(255),
-  account_id VARCHAR(255),
-);
+THIS IS DATA DICTIONARY (NOT CODE)
+PLEASE ONLY PUT DATA TYPES AND REMARKS HERE.
 
-CREATE TABLE photo (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  data IMAGE,
-)
+Databases:
+1. Auth
+2. User
+3. Photo
+4. Book
+5. Transaction
+6. Picture
 
-CREATE TABLE auth (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(10) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-);
+1. Auth
+  1.1 user_id
+  1.2 username
+  1.3 password
 
-CREATE TABLE user (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
-  school VARCHAR(255),
-  year INT,
-  is_active BOOLEAN NOT NULL,
-  credit INT NOT NULL,
-  photo INT FOREIGN KEY REFERENCES photo(id),
-  phone_no VARCHAR(20),
-  email VARCHAR(255),
-  social_media_id INT FOREIGN KEY REFERENCES social_media(id),
-  social_media_id_alt INT FOREIGN KEY REFERENCES social_media(id),
-  locations TEXT,
-);
-/*
-  User_ID
-  Username
-  Password
-  First_Name
-  Last_Name
-  School
-  Year
-  Active_Status
-  Credit_Points
-  Photo_ID
-  Phone_No
-  Email
-  Social_Media_Type
-  Social_Media_ID
-  Sec_Social_Media_Type
-  Sec_Social_Media_ID
-  Avail_Trans_Places
-*/
+2. User
+  2.1 id
+  2.2 first_name
+  2.3 last_name
+  2.4 school
+  2.5 year
+  2.6 is_active
+  2.7 credit
+  2.8 photo_id
+  2.9 phone_no
+  2.10 email
+  2.11 social_media
+  2.12 avail_locations
 
-CREATE TABLE book (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  ISBN INT,
-  name VARCHAR(255),
-  edition VARCHAR(255),
-  author VARCHAR(255),
-  public_date DATE,
-  sellor INT NOT NULL FOREIGN KEY REFERENCES user(id),
-  price INT,
-  condition INT, /* rating 1-5 */
-  photo INT FOREIGN KEY REFERENCES photo(id),
-  desc TEXT,
-  avail_date DATE,
-  expire_date DATE,
-  location TEXT,
-  transaction INT FOREIGN KEY REFERENCES transaction(id),
-);
+3. Photo
+  3.1 photo_id
+  3.2 data
 
-/*
-  ID
-  ISBN
-  Name
-  Edition
-  Author
-  Public_Date
-  Seller_ID
-  Price
-  Format ? what is this
-  Used_Condition
-  Class ? what is this
-  Class_Session ? what is this
-  Picture
-  Description
-  Avail_Date
-  Expir_Date
-  Trans_Places
-  Sold_Status
+4. Book
+  4.1 id
+  4.2 isbn
+  4.3 name
+  4.4 edition
+  4.5 public_date
+  4.6 format
+  4.7 used_condition
+  4.8 class_code
+  4.9 class_session
+  4.10 picture_id
+  4.11 description
+  4.12 avail_date
+  4.13 expir_date
+  4.14 prefer_locations
+  4.15 trans_id
 
-*/
+5. Transaction
+  5.1 id
+  5.2 seller
+  5.3 buyer
+  5.4 date
+  5.5 status
 
-CREATE TABLE transaction (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  sellor INT NOT NULL FOREIGN KEY REFERENCES user(id),
-  buyer INT NOT NULL FOREIGN KEY REFERENCES user(id),
-  date DATE,
-  status BOOLEAN,
-);
-
-/*
-  Seller_ID
-  Buyer_ID
-  Item_ID
-  Date
-  Trans_Place
-  Finish_Status
-*/
+6. Picture
+  6.1 id
+  6.2 data
