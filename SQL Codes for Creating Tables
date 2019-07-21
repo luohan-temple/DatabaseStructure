@@ -1,40 +1,47 @@
 /* SQL CODES FOR CREATING TABLES */
 
 CREATE TABLE Auth (
-  user_id NUMERIC(8,0) NOT NULL,
-  username VARCHAR(64) NOT NULL,
-  password VARCHAR(64) NOT NULL,
-  
-  PRIMARY KEY (user_id)
-);
-
-CREATE TABLE User (
-  id NUMERIC(8,0) NOT NULL,
-  first_name VARCHAR(64) NOT NULL,
-  last_name VARCHAR(64) NOT NULL,
-  school VARCHAR(255),
-  year NUMERIC(4,0),
-  is_active NUMERIC(1,0) NOT NULL,
-  credit NUMERIC(3,0) NOT NULL,
-  photo_id NUMERIC(10,0),
-  phone_no NUMERIC(10,0),
-  email VARCHAR(255) NOT NULL,
-  social_media VARCHAR(1024),
-  avail_locations VARCHAR(255),
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (photo_id) REFERENCES Photo.id
+  usr_id NUMERIC(8,0) NOT NULL PRIMARY KEY,
+  usrname VARCHAR(64) NOT NULL,
+  password VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE Photo (
-  id NUMERIC(10,0) NOT NULL,
-  data VARCHAR(255),
-  
-  PRIMARY KEY (id)
+  photo_id NUMERIC(10,0) NOT NULL PRIMARY KEY,
+  data VARCHAR(255)
+);
+
+
+CREATE TABLE Usr (
+  usr_id NUMERIC(8,0) NOT NULL PRIMARY KEY,
+  first_name VARCHAR(64) NOT NULL,
+  last_name VARCHAR(64) NOT NULL,
+  school VARCHAR(255),
+  yr NUMERIC(4,0),
+  is_active NUMERIC(1,0) NOT NULL,
+  credit NUMERIC(3,0) NOT NULL,
+  photo_id NUMERIC(10,0) REFERENCES Photo(photo_id),
+  phone_no NUMERIC(10,0),
+  email VARCHAR(255) NOT NULL,
+  social_media VARCHAR(1024),
+  avail_locations VARCHAR(255)
+);
+
+CREATE TABLE Transaction (
+  trans_id NUMERIC(16,0) NOT NULL PRIMARY KEY,
+  seller NUMERIC(8,0) NOT NULL REFERENCES Usr(usr_id),
+  buyer NUMERIC(8,0) NOT NULL REFERENCES Usr(usr_id),
+  date NUMERIC(8,0),
+  status NUMERIC(1,0)
+);
+
+CREATE TABLE Picture (
+  picture_id NUMERIC(16,0) NOT NULL PRIMARY KEY,
+  data VARCHAR(255)
 );
 
 CREATE TABLE Book (
-  id NUMERIC(14,0) NOT NULL,
+  book_id NUMERIC(14,0) NOT NULL PRIMARY KEY,
   isbn_10 NUMERIC(10,0),
   isbn_13 NUMERIC(13,0),
   name VARCHAR(255) NOT NULL,
@@ -42,37 +49,14 @@ CREATE TABLE Book (
   edition NUMERIC(2,0),
   public_year NUMERIC(4,0),
   format VARCHAR(32) NOT NULL,
-  condition NUMERIC(1,0),
+  cdt NUMERIC(1,0),
   class_code VARCHAR(16),
   class_session VARCHAR(20),
-  picture_id NUMERIC(16,0),
+  picture_id NUMERIC(16,0) REFERENCES Picture(picture_id),
   description VARCHAR(1024),
   avail_date NUMERIC(8,0),
   expir_date NUMERIC(8,0),
   prefer_locations VARCHAR(255),
-  trans_id NUMERIC(16,0),
-  price NUMERIC(6,2),
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (picture_id) REFERENCES Picture.id,
-  FOREIGN KEY (trans_id) REFERENCES Transaction.id
-);
-
-
-CREATE TABLE Transaction (
-  id NUMERIC(16,0) NOT NUL,
-  seller NUMERIC(8,0) NOT NULL,
-  buyer NUMERIC(8,0) NOT NULL,
-  date NUMERIC(8,0),
-  status NUMERIC(1,0),
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (seller) REFERENCES user.id,
-  FOREIGN KEY (buyer) REFERENCES user.id
-);
-
-CREATE TABLE Picture (
-  id NUMERIC(16,0) NOT NULL,
-  data VARCHAR(255),
-  PRIMARY KEY (id)
+  trans_id NUMERIC(16,0) REFERENCES Transaction(trans_id),
+  price NUMERIC(6,2)
 );
