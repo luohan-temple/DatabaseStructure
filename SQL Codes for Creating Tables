@@ -1,62 +1,78 @@
 /* SQL CODES FOR CREATING TABLES */
 
-CREATE TABLE social_media (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  account_type VARCHAR(255),
-  account_id VARCHAR(255),
+CREATE TABLE Auth (
+  user_id NUMERIC(8,0) NOT NULL,
+  username VARCHAR(64) NOT NULL,
+  password VARCHAR(64) NOT NULL,
+  
+  PRIMARY KEY (user_id)
 );
 
-CREATE TABLE photo (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  data IMAGE,
-);
-
-CREATE TABLE auth (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(10) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-);
-
-CREATE TABLE user (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
+CREATE TABLE User (
+  id NUMERIC(8,0) NOT NULL,
+  first_name VARCHAR(64) NOT NULL,
+  last_name VARCHAR(64) NOT NULL,
   school VARCHAR(255),
-  year INT,
-  is_active BOOLEAN NOT NULL,
-  credit INT NOT NULL,
-  photo INT FOREIGN KEY REFERENCES photo(id),
-  phone_no VARCHAR(20),
-  email VARCHAR(255),
-  social_media_id INT FOREIGN KEY REFERENCES social_media(id),
-  social_media_id_alt INT FOREIGN KEY REFERENCES social_media(id),
-  locations TEXT,
+  year NUMERIC(4,0),
+  is_active NUMERIC(1,0) NOT NULL,
+  credit NUMERIC(3,0) NOT NULL,
+  photo_id NUMERIC(10,0),
+  phone_no NUMERIC(10,0),
+  email VARCHAR(255) NOT NULL,
+  social_media VARCHAR(1024),
+  avail_locations VARCHAR(255),
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (photo_id) REFERENCES Photo.id
 );
 
-CREATE TABLE book (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  ISBN INT,
-  name VARCHAR(255),
-  edition VARCHAR(255),
+CREATE TABLE Photo (
+  id NUMERIC(10,0) NOT NULL,
+  data VARCHAR(255),
+  
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE Book (
+  id NUMERIC(14,0) NOT NULL,
+  isbn_10 NUMERIC(10,0),
+  isbn_13 NUMERIC(13,0),
+  name VARCHAR(255) NOT NULL,
   author VARCHAR(255),
-  public_date DATE,
-  sellor INT NOT NULL FOREIGN KEY REFERENCES user(id),
-  price INT,
-  condition INT, /* rating 1-5 */
-  photo INT FOREIGN KEY REFERENCES photo(id),
-  desc TEXT,
-  avail_date DATE,
-  expire_date DATE,
-  location TEXT,
-  transaction INT FOREIGN KEY REFERENCES transaction(id),
+  edition NUMERIC(2,0),
+  public_year NUMERIC(4,0),
+  format VARCHAR(32) NOT NULL,
+  condition NUMERIC(1,0),
+  class_code VARCHAR(16),
+  class_session VARCHAR(20),
+  picture_id NUMERIC(16,0),
+  description VARCHAR(1024),
+  avail_date NUMERIC(8,0),
+  expir_date NUMERIC(8,0),
+  prefer_locations VARCHAR(255),
+  trans_id NUMERIC(16,0),
+  price NUMERIC(6,2),
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (picture_id) REFERENCES Picture.id,
+  FOREIGN KEY (trans_id) REFERENCES Transaction.id
 );
 
 
-CREATE TABLE transaction (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  sellor INT NOT NULL FOREIGN KEY REFERENCES user(id),
-  buyer INT NOT NULL FOREIGN KEY REFERENCES user(id),
-  date DATE,
-  status BOOLEAN,
+CREATE TABLE Transaction (
+  id NUMERIC(16,0) NOT NUL,
+  seller NUMERIC(8,0) NOT NULL,
+  buyer NUMERIC(8,0) NOT NULL,
+  date NUMERIC(8,0),
+  status NUMERIC(1,0),
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (seller) REFERENCES user.id,
+  FOREIGN KEY (buyer) REFERENCES user.id
 );
 
+CREATE TABLE Picture (
+  id NUMERIC(16,0) NOT NULL,
+  data VARCHAR(255),
+  PRIMARY KEY (id)
+);
